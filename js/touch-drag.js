@@ -9,9 +9,10 @@ let dropPreview = null;
 let dragElement = null;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
-let edgeThreshold = 250; // Порог в пикселях от края для центрирования
+let edgeThreshold = 100; // Порог в пикселях от края для центрирования
 let lastCenteredEdge = 0; // -1: левый край, 1: правый край, 0: нет
 let canCenterAgain = true; // Можно ли снова центрировать
+let touchStartTime = 0;
 
 function initTouchDrag() {
     if (!isMobile) return;
@@ -44,6 +45,9 @@ function handleCardTouchStart(e) {
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
     isTouchDragging = false;
+    
+    // ДОБАВЬТЕ ЭТУ СТРОКУ если хотите использовать вариант с временем:
+    touchStartTime = Date.now(); // ← добавляем эту строку
     
     currentTouchColumn = card.closest('.column');
     
@@ -513,5 +517,4 @@ function updateCardTouchHandlers() {
 
 window.initTouchDrag = initTouchDrag;
 window.cleanupTouchDragSystem = cleanupTouchDragSystem;
-
 window.updateCardTouchHandlers = updateCardTouchHandlers;
