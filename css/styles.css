@@ -1532,3 +1532,53 @@ input, textarea, select {
 .nav-button.next {
     right: 10px;
 }
+
+/* Добавьте в конец файла styles.css */
+
+/* 1. Отступы для кнопок в модальном окне десктопной версии */
+@media screen and (min-width: 769px) {
+    .modal-actions {
+        margin-top: 30px !important;
+        padding: 20px 24px !important;
+        gap: 16px !important;
+        background: var(--gray-50) !important;
+        border-radius: 0 0 var(--radius) var(--radius) !important;
+        border-top: 1px solid var(--gray-200) !important;
+    }
+    
+    .save-card-btn, .delete-card-btn {
+        padding: 10px 20px !important;
+        min-height: 44px !important;
+        font-size: 15px !important;
+    }
+}
+
+/* 2. Центрирование крестика в кнопке закрытия модального окна */
+.modal-close,
+.help-modal-close {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    padding-bottom: 2px !important; /* небольшой визуальный сдвиг для центрирования */
+}
+
+/* 3. Убираем кнопку редактирования карточки */
+.card-edit-btn {
+    display: none !important;
+}
+
+.card:hover .card-edit-btn {
+    display: none !important;
+}
+
+/* Сохраняем краткую информацию для десктопа */
+@media screen and (min-width: 769px) {
+    .card-details {
+        display: none !important;
+    }
+    
+    .card:hover .card-details {
+        display: flex !important;
+    }
+}
