@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Tasker - Канбан-доска</title>
+    <!-- Основные стили -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Мобильные стили -->
+    <link rel="stylesheet" href="css/mobile.css">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+</head>
+<body>
+
+    <!-- Модальные окна -->
+    <div class="color-modal-overlay" id="colorModalOverlay">
+        <div class="color-modal-content">
+            <h3 class="color-modal-title">Выберите цвет колонки</h3>
+            <div class="color-palette" id="colorPalette"></div>
+            <div class="color-actions">
+                <button class="color-cancel-btn" id="colorCancelBtn">Отмена</button>
+                <button class="color-apply-btn" id="colorApplyBtn">Применить</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="add-column-modal-overlay" id="addColumnModalOverlay">
+        <div class="add-column-modal-content">
+            <h3 class="add-column-modal-title">🎯 Добавить колонку</h3>
+            <input type="text" class="add-column-input" id="addColumnInput" placeholder="Введите название колонки">
+            <div class="add-column-actions">
+                <button class="add-column-cancel" id="addColumnCancelBtn">Отмена</button>
+                <button class="add-column-save" id="addColumnSaveBtn" disabled>Сохранить</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-editing-overlay" id="cardEditingOverlay">
+        <div class="card-edit-container">
+            <textarea class="card-edit-textarea" id="cardEditTextarea"></textarea>
+            <div class="card-edit-actions">
+                <button class="card-cancel-btn" id="cardCancelBtn">Отмена</button>
+                <button class="card-save-btn" id="cardSaveBtn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="cardModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            
+            <div class="modal-tabs" id="modalTabs">
+                <button class="modal-tab active" data-tab="info">📋 Информация</button>
+                <button class="modal-tab" data-tab="comments">💬 Комментарии</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-left">
+                    <div class="modal-header">
+                        <div class="modal-card-title" id="modalCardTitle" contenteditable="true"></div>
+                    </div>
+                    
+                    <div class="field-group">
+                        <label class="field-label">Статус</label>
+                        <select class="field-select" id="modalStatus"></select>
+                    </div>
+                    
+                    <div class="field-group">
+                        <label class="field-label">Описание</label>
+                        <textarea class="field-textarea" id="modalDescription" placeholder="Добавьте более подробное описание..."></textarea>
+                    </div>
+                    
+                    <div class="field-group">
+                        <label class="field-label">Дата начала</label>
+                        <input type="date" class="field-input" id="modalStartDate">
+                    </div>
+                    
+                    <div class="field-group">
+                        <label class="field-label">Дата завершения</label>
+                        <input type="date" class="field-input" id="modalDueDate">
+                    </div>
+                    
+                    <div class="field-group">
+                        <label class="field-label">Ответственный</label>
+                        <input type="text" class="field-input" id="modalAssignee" placeholder="Введите имя ответственного">
+                    </div>
+                </div>
+                
+                <div class="modal-right">
+                    <div class="comments-section">
+                        <h3 class="comments-title">Комментарии</h3>
+                        <div id="commentsList"></div>
+                        <div class="add-comment">
+                            <textarea class="comment-textarea" id="newComment" placeholder="Напишите комментарий..."></textarea>
+                            <button class="add-comment-btn" id="addCommentBtn">Добавить комментарий</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-tab-content modal-info-content" id="modalInfoContent"></div>
+                <div class="modal-tab-content modal-comments-content" id="modalCommentsContent"></div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="delete-card-btn" id="deleteCardBtn">Удалить карточку</button>
+                <button class="save-card-btn" id="saveCardBtn" disabled>Сохранить изменения</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirm-modal-overlay" id="confirmModalOverlay">
+        <div class="confirm-modal-content">
+            <h3 class="confirm-modal-title">Удалить карточку?</h3>
+            <p class="confirm-modal-text">Карточка "<span id="confirmCardTitle"></span>" будет удалена безвозвратно. Это действие нельзя отменить.</p>
+            <div class="confirm-modal-actions">
+                <button class="confirm-cancel-btn" id="confirmCancelBtn">Отмена</button>
+                <button class="confirm-delete-btn" id="confirmDeleteBtn">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirm-modal-overlay" id="confirmColumnModalOverlay">
+        <div class="confirm-modal-content">
+            <h3 class="confirm-modal-title">Удалить колонку?</h3>
+            <p class="confirm-modal-text">Колонка "<span id="confirmColumnTitle"></span>" и все карточки внутри будут удалены безвозвратно. Это действие нельзя отменить.</p>
+            <div class="confirm-modal-actions">
+                <button class="confirm-cancel-btn" id="confirmColumnCancelBtn">Отмена</button>
+                <button class="confirm-delete-btn" id="confirmColumnDeleteBtn">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="help-modal-overlay" id="helpModalOverlay">
+        <div class="help-modal-content">
+            <button class="help-modal-close" id="helpModalClose">×</button>
+            <h2 class="help-modal-title">Инструкция по использованию канбан-доски</h2>
+            
+            <div class="help-body">
+                <!-- Содержимое помощи -->
+                <div class="help-section">
+                    <h3 class="help-section-title">Основные возможности</h3>
+                    <ul class="help-list">
+                        <li><strong>Добавление колонки:</strong> Нажмите кнопку "Добавить колонку" в верхней панели</li>
+                        <li><strong>Добавление карточки:</strong> Нажмите "+ Добавить карточку" в любой колонке</li>
+                        <li><strong>Перетаскивание между колонками:</strong> Зажмите карточку и перетащите в другую колонку</li>
+                        <li><strong>Перетаскивание внутри колонки:</strong> Зажмите карточку и переместите выше или ниже в той же колонке</li>
+                        <li><strong>Сохранение:</strong> Данные сохраняются автоматически</li>
+                    </ul>
+                </div>
+
+                <!-- Остальные разделы помощи -->
+                <div class="help-note">
+                    Все изменения автоматически сохраняются в вашем браузере. При повторном посещении страницы ваши данные будут восстановлены.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контейнер приложения -->
+    <div class="test-container">
+        <div class="header">
+            <h1>Tasker</h1>
+            <div class="header-buttons">
+                <button class="add-column-btn" id="addColumnBtn">+ Добавить колонку</button>
+                <button class="help-btn" id="helpBtn">?</button>
+            </div>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+
+        <div class="board" id="board">
+            <!-- Колонки будут добавляться динамически -->
+        </div>
+
+        <div class="scroll-indicator" id="scrollIndicator"></div>
+
+
+        <div class="footer">
+            <div class="footer-content">
+                <p>2025 Salim Lokhutsho</p>
+            </div>
+        </div>
+        
+        <!-- Индикатор прокрутки (точки) -->
+
+        <!-- Кнопки навигации -->
+        <button class="nav-button prev" id="prevButton">‹</button>
+        <button class="nav-button next" id="nextButton">›</button>
+    </div>
+
+
+    <!-- Подключаем JavaScript файлы -->
+    <script src="js/board.js"></script>
+    <script src="js/columns.js"></script>
+    <script src="js/cards.js"></script>
+    <script src="js/modals.js"></script>
+    <script src="js/mobile.js"></script>
+    <script src="js/touch-drag.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

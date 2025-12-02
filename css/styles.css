@@ -1,0 +1,1534 @@
+/* Сброс стилей и базовые настройки */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', sans-serif;
+}
+
+:root {
+    /* Основные цвета как в Jira */
+    --primary: #0052CC;
+    --primary-light: #DEEBFF;
+    --primary-hover: #0747A6;
+    --secondary: #42526E;
+    --success: #00875A;
+    --success-light: #E3FCEF;
+    --danger: #DE350B;
+    --danger-light: #FFEBE6;
+    --warning: #FF991F;
+    --warning-light: #FFFAE6;
+    --info: #0065FF;
+    --info-light: #DEEBFF;
+    
+    /* Нейтральные цвета */
+    --gray-50: #F4F5F7;
+    --gray-100: #EBECF0;
+    --gray-200: #DFE1E6;
+    --gray-300: #C1C7D0;
+    --gray-400: #97A0AF;
+    --gray-500: #6B778C;
+    --gray-600: #5E6C84;
+    --gray-700: #42526E;
+    --gray-800: #253858;
+    --gray-900: #091E42;
+    
+    /* Цвета фона */
+    --bg-primary: #F4F5F7;
+    --bg-secondary: #FFFFFF;
+    --bg-surface: #FFFFFF;
+    --bg-hover: #EBECF0;
+    
+    /* Тени */
+    --shadow-sm: 0px 1px 1px rgba(9, 30, 66, 0.05);
+    --shadow: 0px 1px 1px rgba(9, 30, 66, 0.1), 0px 0px 1px rgba(9, 30, 66, 0.3);
+    --shadow-md: 0px 4px 8px rgba(9, 30, 66, 0.1), 0px 0px 1px rgba(9, 30, 66, 0.3);
+    --shadow-lg: 0px 8px 16px rgba(9, 30, 66, 0.1), 0px 0px 1px rgba(9, 30, 66, 0.3);
+    --shadow-xl: 0px 16px 32px rgba(9, 30, 66, 0.1), 0px 0px 1px rgba(9, 30, 66, 0.3);
+    
+    /* Радиусы */
+    --radius-sm: 3px;
+    --radius: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    
+    /* Transition */
+    --transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body {
+    background: var(--bg-primary);
+    color: var(--gray-900);
+    padding: 16px;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.42857;
+}
+
+.footer {
+    margin-top: 24px;
+    padding: 16px 0;
+    border-top: 1px solid var(--gray-200);
+    text-align: center;
+    color: var(--gray-600);
+    font-size: 13px;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.footer p {
+    margin: 0;
+    opacity: 0.8;
+}
+
+.test-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+}
+
+/* Стили для заголовка */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gray-100);
+}
+
+.header h1 {
+    background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 50px;
+    position: relative;
+    min-height: 40px;
+}
+
+.header h1::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Кнопки */
+.add-column-btn, .save-board-btn, .help-btn, .add-card-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-sm);
+    font-size: 14px;
+    min-height: 32px;
+    font-family: inherit;
+}
+
+.add-column-btn:hover, .save-board-btn:hover:not(:disabled),
+.add-card-btn:hover {
+    background: var(--primary-hover);
+    box-shadow: var(--shadow);
+}
+
+.help-btn {
+    background: var(--gray-100);
+    color: var(--gray-700);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    padding: 0;
+    font-weight: bold;
+}
+
+.help-btn:hover {
+    background: var(--gray-200);
+    color: var(--gray-900);
+}
+
+/* Доска */
+.board {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 4px 0;
+    min-height: 70vh;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-300) var(--gray-100);
+}
+
+.board::-webkit-scrollbar {
+    height: 8px;
+}
+
+.board::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: var(--radius);
+}
+
+.board::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: var(--radius);
+}
+
+.board::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+
+/* Колонки */
+.column {
+    background: var(--gray-50);
+    border-radius: var(--radius);
+    width: 300px;
+    min-width: 300px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 200px);
+    transition: var(--transition);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    animation: slideIn 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.column:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--gray-300);
+}
+
+.column.drop-zone {
+    border: 2px dashed var(--primary);
+    background: var(--primary-light);
+    border-style: dashed;
+}
+
+/* Заголовок колонки */
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    background: white;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    min-height: 40px;
+}
+
+.column-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.column-color-preview {
+    width: 16px;
+    height: 16px;
+    border-radius: var(--radius-sm);
+    border: 2px solid white;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.column-color-preview:hover {
+    transform: scale(1.1);
+}
+
+.column-title {
+    font-weight: 600;
+    font-size: 14px;
+    padding: 4px 8px;
+    flex-grow: 1;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: inherit;
+}
+
+.column-title:focus {
+    background: white;
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.column-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.column-color-btn, .delete-column {
+    background: none;
+    border: none;
+    color: var(--gray-500);
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    padding: 0;
+}
+
+.column-color-btn:hover {
+    background: var(--gray-100);
+    color: var(--primary);
+}
+
+.delete-column:hover {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+/* Контейнер для карточек */
+.cards-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 4px;
+    margin-bottom: 12px;
+    min-height: 10px;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-300) transparent;
+}
+
+.cards-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cards-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cards-container::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: 3px;
+}
+
+.cards-container::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+
+/* Карточки */
+.card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    word-wrap: break-word;
+    position: relative;
+    min-height: 60px;
+    border-left: 3px solid var(--primary);
+    border: 1px solid var(--gray-200);
+}
+
+.card:hover {
+    background: var(--gray-50);
+    box-shadow: var(--shadow);
+    border-color: var(--gray-300);
+    transform: translateY(-1px);
+}
+
+.card.dragging {
+    transform: rotate(2deg);
+    opacity: 0.9;
+    cursor: grabbing;
+    box-shadow: var(--shadow-xl);
+    z-index: 1000;
+    border-color: var(--primary);
+}
+
+.card.dragging .card-edit-btn {
+    display: none !important;
+}
+
+.card.drop-preview {
+    background: var(--primary-light);
+    border: 2px dashed var(--primary);
+    height: 60px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card-title {
+    font-weight: 500;
+    line-height: 1.5;
+    font-size: 14px;
+    color: var(--gray-800);
+    word-break: break-word;
+}
+
+.card-details {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--gray-200);
+}
+
+.card:hover .card-details {
+    display: flex;
+}
+
+.card-detail {
+    font-size: 12px;
+    color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.card-detail-icon {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--gray-500);
+    flex-shrink: 0;
+}
+
+.card-edit-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: white;
+    color: var(--gray-600);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+    cursor: pointer;
+    opacity: 0;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.card:hover .card-edit-btn {
+    opacity: 1;
+}
+
+.card-edit-btn:hover {
+    background: var(--gray-100);
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Форма добавления карточки */
+.add-card-form {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1),
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.add-card-form[style*="display: flex"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-textarea {
+    resize: none;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 12px;
+    min-height: 54px;
+    font-size: 14px;
+    background: white;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.card-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.form-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.add-card-submit {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+.cancel-card-btn {
+    background: none;
+    border: none;
+    color: var(--gray-600);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius);
+    transition: var(--transition);
+}
+
+.cancel-card-btn:hover {
+    background: var(--gray-100);
+    color: var(--gray-900);
+}
+
+/* Кнопка добавления карточки по умолчанию скрыта */
+.add-card-btn {
+    display: none !important;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1), 
+                transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Показываем кнопку при наведении на колонку */
+.column:hover .add-card-btn {
+    display: flex !important;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Также показываем кнопку если фокус на колонке (для доступности) */
+.column:focus-within .add-card-btn {
+    display: flex !important;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Стили для цветовых классов колонок */
+.column-blue {
+    border-top: 3px solid #4A6FA5;
+}
+
+.column-blue .column-header {
+    background: linear-gradient(135deg, #DEEBFF, #B3D4FF);
+}
+
+.column-green {
+    border-top: 3px solid #57A55A;
+}
+
+.column-green .column-header {
+    background: linear-gradient(135deg, #E3FCEF, #ABF5D1);
+}
+
+.column-purple {
+    border-top: 3px solid #6C5FC7;
+}
+
+.column-purple .column-header {
+    background: linear-gradient(135deg, #EAE6FF, #C0B6F2);
+}
+
+.column-yellow {
+    border-top: 3px solid #F5CA4B;
+}
+
+.column-yellow .column-header {
+    background: linear-gradient(135deg, #FFFAE6, #FFE380);
+}
+
+.column-pink {
+    border-top: 3px solid #E569AC;
+}
+
+.column-pink .column-header {
+    background: linear-gradient(135deg, #FFECF8, #FFD6F1);
+}
+
+.column-red {
+    border-top: 3px solid #E77471;
+}
+
+.column-red .column-header {
+    background: linear-gradient(135deg, #FFEBE6, #FFBDAD);
+}
+
+.column-teal {
+    border-top: 3px solid #0A7F8F;
+}
+
+.column-teal .column-header {
+    background: linear-gradient(135deg, #E6F7FA, #B3ECF5);
+}
+
+.column-orange {
+    border-top: 3px solid #E57A3C;
+}
+
+.column-orange .column-header {
+    background: linear-gradient(135deg, #FFF4E6, #FFD8B3);
+}
+
+.column-gray {
+    border-top: 3px solid #8993A4;
+}
+
+.column-gray .column-header {
+    background: linear-gradient(135deg, #F4F5F7, #EBECF0);
+}
+
+.column-lime {
+    border-top: 3px solid #8CBD18;
+}
+
+.column-lime .column-header {
+    background: linear-gradient(135deg, #F0F5CC, #E1F0A3);
+}
+
+.column-indigo {
+    border-top: 3px solid #5E6C84;
+}
+
+.column-indigo .column-header {
+    background: linear-gradient(135deg, #F0F3FF, #D1D9FF);
+}
+
+.column-mint {
+    border-top: 3px solid #00C7E6;
+}
+
+.column-mint .column-header {
+    background: linear-gradient(135deg, #E6F9FF, #B3EFFF);
+}
+
+/* Модальные окна - общие стили */
+.modal-overlay, .add-column-modal-overlay, .confirm-modal-overlay, .help-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(9, 30, 66, 0.54);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content, .add-column-modal-content, .confirm-modal-content {
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--gray-200);
+}
+
+/* Модальное окно выбора цвета */
+.color-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(9, 30, 66, 0.54);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.color-modal-content {
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 500px;
+    padding: 24px;
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    border: 1px solid var(--gray-200);
+}
+
+.color-modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--gray-900);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-modal-title::before {
+    content: '🎨';
+    font-size: 18px;
+}
+
+.color-palette {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 3px solid transparent;
+    box-shadow: var(--shadow-sm);
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+.color-option.selected {
+    border-color: var(--gray-900);
+    transform: scale(1.1);
+}
+
+.color-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-200);
+}
+
+.color-cancel-btn, .color-apply-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: var(--transition);
+    font-family: inherit;
+}
+
+.color-cancel-btn {
+    background: var(--gray-100);
+    color: var(--gray-700);
+}
+
+.color-cancel-btn:hover {
+    background: var(--gray-200);
+}
+
+.color-apply-btn {
+    background: var(--primary);
+    color: white;
+}
+
+.color-apply-btn:hover {
+    background: var(--primary-hover);
+}
+
+/* Оверлей для редактирования карточки */
+.card-editing-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(9, 30, 66, 0.54);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.card-edit-container {
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 400px;
+    padding: 24px;
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    border: 1px solid var(--gray-200);
+}
+
+.card-edit-textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 2px solid var(--primary);
+    border-radius: var(--radius);
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    margin-bottom: 20px;
+    background: white;
+    transition: var(--transition);
+    font-family: inherit;
+}
+
+.card-edit-textarea:focus {
+    outline: none;
+    border-color: var(--primary-hover);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.card-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.card-cancel-btn, .card-save-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+.card-cancel-btn {
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+}
+
+.card-cancel-btn:hover {
+    background-color: var(--gray-200);
+}
+
+.card-save-btn {
+    background-color: var(--primary);
+    color: white;
+}
+
+.card-save-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Модальное окно для добавления колонки */
+.add-column-modal-content {
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 400px;
+    padding: 24px;
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    border: 1px solid var(--gray-200);
+}
+
+.add-column-modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--gray-900);
+}
+
+.add-column-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: 14px;
+    margin-bottom: 20px;
+    background: white;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.add-column-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.add-column-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.add-column-cancel, .add-column-save {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+.add-column-cancel {
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+}
+
+.add-column-cancel:hover {
+    background-color: var(--gray-200);
+}
+
+.add-column-save {
+    background-color: var(--primary);
+    color: white;
+}
+
+.add-column-save:hover {
+    background-color: var(--primary-hover);
+}
+
+.add-column-save:disabled {
+    background-color: var(--gray-300);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Модальное окно для карточки */
+.modal-content {
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--gray-600);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    padding: 0;
+}
+
+.modal-close:hover {
+    background-color: var(--gray-100);
+    color: var(--gray-900);
+}
+
+.modal-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.modal-left {
+    flex: 1;
+    padding: 24px;
+    border-right: 1px solid var(--gray-200);
+    overflow-y: auto;
+    min-width: 0;
+}
+
+.modal-right {
+    flex: 1;
+    padding: 24px;
+    background-color: var(--gray-50);
+    overflow-y: auto;
+    min-width: 0;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.modal-card-title {
+    font-size: 20px;
+    font-weight: 600;
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    margin: 0;
+    width: 100%;
+    min-height: 40px;
+    outline: none;
+    font-family: inherit;
+}
+
+.modal-card-title:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: white;
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.field-group {
+    margin-bottom: 20px;
+}
+
+.field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--gray-600);
+}
+
+.field-input, .field-textarea, .field-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: 14px;
+    transition: var(--transition);
+    background: white;
+    font-family: inherit;
+}
+
+.field-input:focus, .field-textarea:focus, .field-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.field-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.save-card-btn, .delete-card-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition);
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.save-card-btn {
+    background-color: var(--primary);
+    color: white;
+}
+
+.save-card-btn:disabled {
+    background-color: var(--gray-300);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.save-card-btn:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.delete-card-btn {
+    background-color: var(--danger);
+    color: white;
+}
+
+.delete-card-btn:hover {
+    background-color: #C22A1F;
+}
+
+/* Стили для комментариев */
+.comments-section {
+    margin-top: 24px;
+}
+
+.comments-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--gray-900);
+}
+
+.comment {
+    background: white;
+    padding: 12px;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+}
+
+.comment-text {
+    margin-bottom: 8px;
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.comment-meta {
+    font-size: 12px;
+    color: var(--gray-500);
+}
+
+.add-comment {
+    margin-top: 16px;
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    resize: vertical;
+    min-height: 60px;
+    font-size: 14px;
+    margin-bottom: 8px;
+    background: white;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.add-comment-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    transition: var(--transition);
+    font-family: inherit;
+}
+
+.add-comment-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Модальное окно подтверждения удаления */
+.confirm-modal-content {
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 500px;
+    padding: 32px;
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+    border: 1px solid var(--gray-200);
+}
+
+.confirm-modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--gray-900);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.confirm-modal-title::before {
+    content: '⚠️';
+    font-size: 22px;
+}
+
+.confirm-modal-text {
+    color: var(--gray-600);
+    line-height: 1.5;
+    margin-bottom: 28px;
+    font-size: 14px;
+}
+
+.confirm-modal-text span {
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.confirm-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.confirm-cancel-btn, .confirm-delete-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: var(--transition);
+    min-width: 100px;
+    font-family: inherit;
+}
+
+.confirm-cancel-btn {
+    background: var(--gray-100);
+    color: var(--gray-700);
+}
+
+.confirm-cancel-btn:hover {
+    background: var(--gray-200);
+}
+
+.confirm-delete-btn {
+    background: var(--danger);
+    color: white;
+}
+
+.confirm-delete-btn:hover {
+    background: #C22A1F;
+}
+
+/* Модальное окно помощи */
+.help-modal-content {
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    padding: 32px;
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+}
+
+.help-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--gray-600);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 0;
+}
+
+.help-modal-close:hover {
+    background-color: var(--gray-100);
+    color: var(--gray-900);
+}
+
+.help-modal-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--gray-900);
+    padding-right: 40px;
+    line-height: 1.3;
+}
+
+.help-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-right: -8px;
+}
+
+.help-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.help-body::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 3px;
+}
+
+.help-body::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: 3px;
+}
+
+.help-body::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+
+.help-section {
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.help-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.help-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--gray-800);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.help-section-title::before {
+    content: '•';
+    color: var(--primary);
+    font-size: 20px;
+    line-height: 1;
+}
+
+.help-list {
+    padding-left: 20px;
+    list-style-type: none;
+}
+
+.help-list li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+    color: var(--gray-700);
+    position: relative;
+    padding-left: 8px;
+    font-size: 14px;
+}
+
+.help-list li::before {
+    content: '–';
+    position: absolute;
+    left: -12px;
+    color: var(--gray-400);
+}
+
+.help-list strong {
+    color: var(--gray-900);
+    font-weight: 600;
+}
+
+.help-note {
+    background-color: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 16px 20px;
+    margin-top: 24px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-style: italic;
+    color: var(--gray-700);
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+/* Анимации */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стиль для статусных сообщений */
+.status-message {
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: var(--radius);
+    text-align: center;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+    font-size: 14px;
+    border: 1px solid transparent;
+}
+
+.status-message.success {
+    background: var(--success-light);
+    color: var(--success);
+    border-color: var(--success-light);
+}
+
+.status-message.info {
+    background: var(--info-light);
+    color: var(--info);
+    border-color: var(--info-light);
+}
+
+.status-message.error {
+    background: var(--danger-light);
+    color: var(--danger);
+    border-color: var(--danger-light);
+}
+
+/* Общие стили */
+button {
+    font-family: inherit;
+}
+
+input, textarea, select {
+    font-family: inherit;
+}
+
+::placeholder {
+    color: var(--gray-400);
+}
+
+:-ms-input-placeholder {
+    color: var(--gray-400);
+}
+
+::-ms-input-placeholder {
+    color: var(--gray-400);
+}
+
+/* Дополнительные элементы */
+.scroll-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.scroll-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-300);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.scroll-dot.active {
+    background: var(--primary);
+    transform: scale(1.2);
+}
+
+.nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    z-index: 100;
+    transition: var(--transition);
+}
+
+.nav-button:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.nav-button.prev {
+    left: 10px;
+}
+
+.nav-button.next {
+    right: 10px;
+}
