@@ -81,31 +81,32 @@ function createCardElement(container, card, columnColor) {
     
     cardContent.appendChild(cardDetails);
     cardElement.appendChild(cardContent);
-    
+    /*
     // Кнопка редактирования
     const editButton = document.createElement('button');
     editButton.className = 'card-edit-btn';
     editButton.innerHTML = '✏️';
     editButton.title = 'Редактировать карточку';
     cardElement.appendChild(editButton);
-    
+    */
     cardData[card.id] = card;
     
     // Обработчик клика для открытия модального окна (только для десктопа)
     if (!isMobile) {
         cardElement.addEventListener('click', function(e) {
-            if (!draggedCard && e.target !== editButton) {
+            if (!draggedCard && e.target) {
                 openCardModal(card.id, this);
             }
         });
     }
     
+    /*
     // Обработчик для кнопки редактирования
     editButton.addEventListener('click', function(e) {
         e.stopPropagation();
         startCardEdit(cardElement, card);
     });
-    
+    */
     // Настройка drag and drop только для десктопа
     if (!isMobile) {
         setupCardDragAndDrop(cardElement);
