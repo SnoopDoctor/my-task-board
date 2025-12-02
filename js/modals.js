@@ -19,8 +19,8 @@ function initModalHandlers() {
     const addColumnInput = document.getElementById('addColumnInput');
     
     // Редактирование карточки
-    const cardEditSaveBtn = document.getElementById('cardSaveBtn');
-    const cardEditCancelBtn = document.getElementById('cardCancelBtn');
+    /*const cardEditSaveBtn = document.getElementById('cardSaveBtn');*/
+    /*const cardEditCancelBtn = document.getElementById('cardCancelBtn');*/
     
     // Подтверждение удаления карточки
     const confirmCancelBtn = document.getElementById('confirmCancelBtn');
@@ -52,8 +52,8 @@ function initModalHandlers() {
     if (addColumnInput) addColumnInput.addEventListener('input', toggleAddColumnSaveButton);
     
     // Редактирование карточки
-    if (cardEditSaveBtn) cardEditSaveBtn.addEventListener('click', saveCardEdit);
-    if (cardEditCancelBtn) cardEditCancelBtn.addEventListener('click', cancelCardEdit);
+   /* if (cardEditSaveBtn) cardEditSaveBtn.addEventListener('click', saveCardEdit);*/
+    /*if (cardEditCancelBtn) cardEditCancelBtn.addEventListener('click', cancelCardEdit);*/
     
     // Подтверждение удаления карточки
     if (confirmCancelBtn) confirmCancelBtn.addEventListener('click', hideDeleteConfirmation);
@@ -173,6 +173,7 @@ function hideHelpModal() {
     }
 }
 
+/*
 function startCardEdit(cardElement, card) {
     editingCardElement = cardElement;
     const currentText = card.title;
@@ -222,7 +223,7 @@ function cancelCardEdit() {
         cardEditTextarea.value = '';
     }
 }
-
+*/
 function openCardModal(cardId, cardElement) {
     currentCard = cardId;
     const data = cardData[cardId];
