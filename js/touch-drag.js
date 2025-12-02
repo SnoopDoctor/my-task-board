@@ -9,7 +9,7 @@ let dropPreview = null;
 let dragElement = null;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
-let edgeThreshold = 100; // Порог в пикселях от края для центрирования
+let edgeThreshold = 250; // Порог в пикселях от края для центрирования
 let lastCenteredEdge = 0; // -1: левый край, 1: правый край, 0: нет
 let canCenterAgain = true; // Можно ли снова центрировать
 
@@ -513,4 +513,5 @@ function updateCardTouchHandlers() {
 
 window.initTouchDrag = initTouchDrag;
 window.cleanupTouchDragSystem = cleanupTouchDragSystem;
+
 window.updateCardTouchHandlers = updateCardTouchHandlers;
