@@ -41,9 +41,9 @@ function createColumnElement(columnData) {
             </div>
         </div>
         <div class="cards-container"></div>
-        <button class="add-card-btn" id="add-card-btn">Добавить карточку</button>
+        <button class="add-card-btn" id="add-card-btn">Добавить задачу</button>
         <div class="add-card-form">
-            <textarea class="card-textarea" placeholder="Введите описание карточки..."></textarea>
+            <textarea class="card-textarea" placeholder="Введите описание задачи..."></textarea>
             <div class="form-buttons">
                 <button class="add-card-submit">Добавить</button>
                 <button class="cancel-card-btn">×</button>
