@@ -1,0 +1,61 @@
+/* modal-fixes.css - дополнительные исправления для модальных окон */
+
+/* Центрирование крестика в круглой кнопке закрытия */
+.modal-close::before {
+    content: '×';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 24px;
+    line-height: 1;
+    margin-top: -2px; /* небольшой визуальный сдвиг */
+}
+
+/* Более компактные вкладки для мобильной версии */
+@media screen and (max-width: 768px) {
+    .modal-tabs {
+        padding: 0 4px !important;
+    }
+    
+    .modal-tab {
+        padding: 12px 6px !important;
+        margin: 0 2px !important;
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/* Улучшенный вид кнопок добавления колонки и помощи на мобильных */
+@media screen and (max-width: 768px) {
+    .header-buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 4px;
+    }
+    
+    .add-column-btn {
+        flex: 1;
+        margin-right: 8px;
+    }
+    
+    .help-btn {
+        flex-shrink: 0;
+    }
+}
+
+/* Для десктопа: убираем кнопку редактирования */
+.card-edit-btn {
+    display: none !important;
+}
+
+/* Сохраняем отображение краткой информации при наведении только на десктопе */
+@media screen and (min-width: 769px) {
+    .card:hover .card-details {
+        display: flex !important;
+    }
+}
