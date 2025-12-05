@@ -4,18 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Tasker</title>
-    <!-- Основные стили -->
     <link rel="stylesheet" href="css/styles.css">
-    <!-- Мобильные стили -->
     <link rel="stylesheet" href="css/mobile.css">
-    <!-- Доп стили -->
     <link rel="stylesheet" href="css/modal-fixes.css">
-    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
 </head>
 <body>
 
-    <!-- Модальные окна -->
     <div class="color-modal-overlay" id="colorModalOverlay">
         <div class="color-modal-content">
             <h3 class="color-modal-title">Выберите цвет колонки</h3>
@@ -139,7 +134,6 @@
             <h2 class="help-modal-title">Инструкция по использованию канбан-доски</h2>
             
             <div class="help-body">
-                <!-- Содержимое помощи -->
                 <div class="help-section">
                     <h3 class="help-section-title">Основные возможности</h3>
                     <ul class="help-list">
@@ -151,7 +145,6 @@
                     </ul>
                 </div>
 
-                <!-- Остальные разделы помощи -->
                 <div class="help-note">
                     Все изменения автоматически сохраняются в вашем браузере. При повторном посещении страницы ваши данные будут восстановлены.
                 </div>
@@ -159,7 +152,6 @@
         </div>
     </div>
 
-    <!-- Основной контейнер приложения -->
     <div class="test-container">
         <div class="header">
             <h1>Tasker</h1>
@@ -172,7 +164,6 @@
         <div id="statusMessage" class="status-message"></div>
 
         <div class="board" id="board">
-            <!-- Колонки будут добавляться динамически -->
         </div>
 
         <div class="scroll-indicator" id="scrollIndicator"></div>
@@ -184,15 +175,11 @@
             </div>
         </div>
         
-        <!-- Индикатор прокрутки (точки) -->
-
-        <!-- Кнопки навигации -->
         <button class="nav-button prev" id="prevButton">‹</button>
         <button class="nav-button next" id="nextButton">›</button>
     </div>
 
 
-    <!-- Подключаем JavaScript файлы -->
     <script src="js/board.js"></script>
     <script src="js/columns.js"></script>
     <script src="js/cards.js"></script>
