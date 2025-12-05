@@ -1,31 +1,26 @@
 let draggedCard = null;
 let editingCardElement = null;
 
-// Функция создания элемента карточки
 function createCardElement(container, card, columnColor) {
     const cardElement = document.createElement('div');
     cardElement.className = 'card';
-    cardElement.draggable = !isMobile; // На мобильных отключаем стандартный drag and drop
+    cardElement.draggable = !isMobile;
     cardElement.dataset.cardId = card.id;
     
-    // Устанавливаем цвет границы в соответствии с цветом колонки
     const colorValue = getColorValue(columnColor || 'column-blue');
     cardElement.style.borderLeftColor = colorValue;
     
     const cardContent = document.createElement('div');
     cardContent.className = 'card-content';
     
-    // Заголовок карточки
     const cardTitle = document.createElement('div');
     cardTitle.className = 'card-title';
     cardTitle.textContent = card.title;
     cardContent.appendChild(cardTitle);
     
-    // Дополнительная информация
     const cardDetails = document.createElement('div');
     cardDetails.className = 'card-details';
     
-    // Дата начала
     if (card.startDate) {
         const startDateElement = document.createElement('div');
         startDateElement.className = 'card-detail';
@@ -36,7 +31,6 @@ function createCardElement(container, card, columnColor) {
         cardDetails.appendChild(startDateElement);
     }
     
-    // Дата завершения
     if (card.dueDate) {
         const dueDateElement = document.createElement('div');
         dueDateElement.className = 'card-detail';
@@ -47,7 +41,6 @@ function createCardElement(container, card, columnColor) {
         cardDetails.appendChild(dueDateElement);
     }
     
-    // Ответственный
     if (card.assignee) {
         const assigneeElement = document.createElement('div');
         assigneeElement.className = 'card-detail';
@@ -58,7 +51,6 @@ function createCardElement(container, card, columnColor) {
         cardDetails.appendChild(assigneeElement);
     }
     
-    // Дата последнего изменения статуса (только для архива)
     const column = container.closest('.column');
     if (column) {
         const columnTitle = column.querySelector('.column-title').textContent;
@@ -81,17 +73,8 @@ function createCardElement(container, card, columnColor) {
     
     cardContent.appendChild(cardDetails);
     cardElement.appendChild(cardContent);
-    /*
-    // Кнопка редактирования
-    const editButton = document.createElement('button');
-    editButton.className = 'card-edit-btn';
-    editButton.innerHTML = '✏️';
-    editButton.title = 'Редактировать карточку';
-    cardElement.appendChild(editButton);
-    */
     cardData[card.id] = card;
     
-    // Обработчик клика для открытия модального окна (только для десктопа)
     if (!isMobile) {
         cardElement.addEventListener('click', function(e) {
             if (!draggedCard && e.target) {
@@ -100,14 +83,6 @@ function createCardElement(container, card, columnColor) {
         });
     }
     
-    /*
-    // Обработчик для кнопки редактирования
-    editButton.addEventListener('click', function(e) {
-        e.stopPropagation();
-        startCardEdit(cardElement, card);
-    });
-    */
-    // Настройка drag and drop только для десктопа
     if (!isMobile) {
         setupCardDragAndDrop(cardElement);
     }
@@ -115,14 +90,12 @@ function createCardElement(container, card, columnColor) {
     container.appendChild(cardElement);
 
     if (isMobile && window.updateCardTouchHandlers) {
-        // Добавляем небольшую задержку для гарантированной инициализации карточки
         setTimeout(() => {
             window.updateCardTouchHandlers();
         }, 50);
     }
 }
 
-// Настройка drag and drop для карточки (только для десктопа)
 function setupCardDragAndDrop(cardElement) {
     if (isMobile) return;
     
@@ -165,7 +138,6 @@ function setupCardDragAndDrop(cardElement) {
     });
 }
 
-// Функция для определения позиции вставки при перетаскивании
 function getDragAfterElement(container, y) {
     const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')];
     
@@ -181,7 +153,6 @@ function getDragAfterElement(container, y) {
     }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
-// Функция обновления порядка карточек в колонке
 function updateCardOrderInColumn(columnId) {
     const column = document.querySelector(`[data-column-id="${columnId}"]`);
     const cardsContainer = column.querySelector('.cards-container');
@@ -194,33 +165,27 @@ function updateCardOrderInColumn(columnId) {
     }
 }
 
-// Функция перемещения карточки между колонками
 function moveCardToColumn(cardId, targetColumnId) {
     
     let sourceColumn = null;
     let cardDataItem = null;
     
-    // Ищем карточку в данных
     for (const column of boardData.columns) {
         const cardIndex = column.cards.findIndex(card => card.id === cardId);
         if (cardIndex !== -1) {
             sourceColumn = column;
             cardDataItem = column.cards[cardIndex];
             
-            // Удаляем из исходной колонки
             column.cards.splice(cardIndex, 1);
             break;
         }
     }
     
     if (cardDataItem) {
-        // Обновляем дату изменения статуса
         updateStatusChangeDate(cardId, targetColumnId);
         
-        // Находим целевую колонку
         const targetColumn = boardData.columns.find(col => col.id === targetColumnId);
         if (targetColumn) {
-            // Добавляем в целевую колонку
             targetColumn.cards.push(cardDataItem);
             return true;
         } else {
@@ -233,7 +198,6 @@ function moveCardToColumn(cardId, targetColumnId) {
     return false;
 }
 
-// Функция обновления даты изменения статуса
 function updateStatusChangeDate(cardId, targetColumnId) {
     if (cardData[cardId]) {
         if (!cardData[cardId].statusChangeDate) {
@@ -243,7 +207,6 @@ function updateStatusChangeDate(cardId, targetColumnId) {
     }
 }
 
-// Функция для поиска колонки по ID карточки
 function findColumnByCardId(cardId) {
     for (const column of boardData.columns) {
         if (column.cards.some(card => card.id === cardId)) {
@@ -253,17 +216,14 @@ function findColumnByCardId(cardId) {
     return null;
 }
 
-// Функция для обновления отображения карточки
 function updateCardDisplay(cardId) {
     const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
     if (!cardElement) return;
     
     const card = cardData[cardId];
     
-    // Находим колонку карточки
     const column = cardElement.closest('.column');
     if (column) {
-        // Получаем цвет колонки
         let columnColor = 'column-blue';
         for (const color of columnColors) {
             if (column.classList.contains(color.class)) {
@@ -272,18 +232,15 @@ function updateCardDisplay(cardId) {
             }
         }
         
-        // Обновляем цвет границы
         const colorValue = getColorValue(columnColor);
         cardElement.style.borderLeftColor = colorValue;
     }
     
-    // Обновляем заголовок
     const cardTitle = cardElement.querySelector('.card-title');
     if (cardTitle) {
         cardTitle.textContent = card.title;
     }
     
-    // Обновляем дополнительные детали
     const cardDetails = cardElement.querySelector('.card-details');
     if (cardDetails) {
         cardDetails.innerHTML = '';
@@ -318,7 +275,6 @@ function updateCardDisplay(cardId) {
             cardDetails.appendChild(assigneeElement);
         }
         
-        // Дата последнего изменения статуса (только для архива)
         const column = cardElement.closest('.column');
         if (column) {
             const columnTitle = column.querySelector('.column-title').textContent;
