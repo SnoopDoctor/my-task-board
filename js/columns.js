@@ -1,4 +1,3 @@
-// Палитра цветов для колонок
 const columnColors = [
     { name: 'Синий Jira', value: '#4A6FA5', class: 'column-blue' },
     { name: 'Зеленый Jira', value: '#57A55A', class: 'column-green' },
@@ -16,13 +15,11 @@ const columnColors = [
 
 let currentColumnForColor = null;
 
-// Функция создания элемента колонки
 function createColumnElement(columnData) {
     const column = document.createElement('div');
     column.className = 'column';
     column.dataset.columnId = columnData.id;
     
-    // Добавляем класс цвета
     column.classList.add(columnData.color || 'column-blue');
     
     column.innerHTML = `
@@ -55,7 +52,6 @@ function createColumnElement(columnData) {
     return column;
 }
 
-// Функция настройки обработчиков событий для колонки
 function setupColumnEventListeners(column, columnData) {
     const deleteBtn = column.querySelector('.delete-column');
     const addCardBtn = column.querySelector('.add-card-btn');
@@ -68,12 +64,10 @@ function setupColumnEventListeners(column, columnData) {
     const colorBtn = column.querySelector('.column-color-btn');
     const colorPreview = column.querySelector('.column-color-preview');
     
-    // Обработчик для кнопки изменения цвета
     colorBtn.addEventListener('click', function() {
         showColorModal(column, columnData);
     });
     
-    // Обработчик для превью цвета
     colorPreview.addEventListener('click', function() {
         showColorModal(column, columnData);
     });
@@ -121,7 +115,6 @@ function setupColumnEventListeners(column, columnData) {
             
             cardTextarea.value = '';
             addCardForm.style.display = 'none';
-            // Кнопка появится снова при наведении благодаря CSS
             autoSave();
         }
     });
@@ -130,10 +123,8 @@ function setupColumnEventListeners(column, columnData) {
         e.stopPropagation();
         cardTextarea.value = '';
         addCardForm.style.display = 'none';
-        // Кнопка появится снова при наведении благодаря CSS
     });
     
-    // Также добавим обработчик для отправки формы по Enter
     cardTextarea.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -145,7 +136,6 @@ function setupColumnEventListeners(column, columnData) {
         }
     });
     
-    // Закрытие формы при клике вне её, если она открыта
     document.addEventListener('click', function(e) {
         if (addCardForm.style.display === 'flex' && 
             !addCardForm.contains(e.target) && 
@@ -155,7 +145,6 @@ function setupColumnEventListeners(column, columnData) {
         }
     });
     
-    // Плавное появление/скрытие кнопки при перетаскивании
     column.addEventListener('dragenter', function() {
         if (!isMobile) {
             addCardBtn.style.opacity = '0.5';
@@ -168,7 +157,6 @@ function setupColumnEventListeners(column, columnData) {
         }
     });
     
-    // Сохраняем видимость кнопки при фокусе внутри колонки (для доступности)
     column.addEventListener('focusin', function() {
         if (!isMobile) {
             addCardBtn.style.display = 'flex';
@@ -180,7 +168,6 @@ function setupColumnEventListeners(column, columnData) {
     
     column.addEventListener('focusout', function(e) {
         if (!isMobile) {
-            // Проверяем, не перешел ли фокус на другой элемент внутри колонки
             if (!column.contains(e.relatedTarget)) {
                 setTimeout(() => {
                     if (!column.matches(':hover') && !column.matches(':focus-within')) {
@@ -194,7 +181,6 @@ function setupColumnEventListeners(column, columnData) {
     setupColumnDragAndDrop(column, cardsContainer);
 }
 
-// Настройка drag and drop для колонки
 function setupColumnDragAndDrop(column, cardsContainer) {
     column.addEventListener('dragover', function(e) {
         e.preventDefault();
@@ -222,7 +208,6 @@ function setupColumnDragAndDrop(column, cardsContainer) {
             moveCardToColumn(cardId, targetColumnId);
             cardsContainer.appendChild(draggedCard);
             
-            // Обновляем цвет границы карточки при перемещении
             const targetColumn = boardData.columns.find(col => col.id === targetColumnId);
             if (targetColumn) {
                 draggedCard.style.borderLeftColor = getColorValue(targetColumn.color);
@@ -233,7 +218,6 @@ function setupColumnDragAndDrop(column, cardsContainer) {
         }
     });
     
-    // Перетаскивание внутри колонки
     cardsContainer.addEventListener('dragover', function(e) {
         e.preventDefault();
         if (!draggedCard) return;
@@ -249,7 +233,6 @@ function setupColumnDragAndDrop(column, cardsContainer) {
         
         const columnId = column.dataset.columnId;
         
-        // ВАЖНО: Обновляем цвет даже при перемещении внутри колонки
         const targetColumn = boardData.columns.find(col => col.id === columnId);
         if (targetColumn) {
             const colorValue = getColorValue(targetColumn.color);
@@ -259,22 +242,17 @@ function setupColumnDragAndDrop(column, cardsContainer) {
         updateCardOrderInColumn(columnId);
     });
     
-    // Обработчик drop для cardsContainer (когда карточка перетаскивается из другой колонки прямо в cardsContainer)
     cardsContainer.addEventListener('drop', function(e) {
         e.preventDefault();
         
-        // Если карточка из другой колонки
         if (draggedCard && !cardsContainer.contains(draggedCard)) {
             const cardId = draggedCard.dataset.cardId;
             const columnId = column.dataset.columnId;
             
-            // Перемещаем между колонками
             moveCardToColumn(cardId, columnId);
             
-            // Добавляем в DOM
             cardsContainer.appendChild(draggedCard);
             
-            // Обновляем цвет
             const targetColumn = boardData.columns.find(col => col.id === columnId);
             if (targetColumn) {
                 const colorValue = getColorValue(targetColumn.color);
@@ -284,24 +262,20 @@ function setupColumnDragAndDrop(column, cardsContainer) {
             autoSave();
             draggedCard = null;
             
-            // Убираем класс drop-zone
             column.classList.remove('drop-zone');
         }
     });
     
-    // При завершении перетаскивания убираем класс drop-zone
     cardsContainer.addEventListener('dragend', function() {
         column.classList.remove('drop-zone');
     });
 }
 
-// Функция для получения значения цвета по классу
 function getColorValue(colorClass) {
     const color = columnColors.find(c => c.class === colorClass);
     return color ? color.value : '#4A6FA5';
 }
 
-// Функция инициализации палитры цветов
 function initColorPalette() {
     const colorPalette = document.getElementById('colorPalette');
     if (!colorPalette) return;
@@ -325,7 +299,6 @@ function initColorPalette() {
     });
 }
 
-// Функция создания новой колонки
 function createNewColumn() {
     const addColumnInput = document.getElementById('addColumnInput');
     const columnTitle = addColumnInput.value.trim();
@@ -342,10 +315,8 @@ function createNewColumn() {
         board.appendChild(column);
         hideAddColumnModal();
         
-        // Инициализируем палитру цветов
         initColorPalette();
         
-        // Обновляем мобильный свайп
         setTimeout(() => {
             mobileColumns = Array.from(board.querySelectorAll('.column'));
             if (isMobile) {
@@ -358,7 +329,6 @@ function createNewColumn() {
     }
 }
 
-// Показать модальное окно выбора цвета
 function showColorModal(columnElement, columnData) {
     currentColumnForColor = {
         element: columnElement,
@@ -382,7 +352,6 @@ function showColorModal(columnElement, columnData) {
     }
 }
 
-// Применить выбранный цвет к колонке
 function applyColorToColumn() {
     if (!currentColumnForColor) return;
     
@@ -395,25 +364,20 @@ function applyColorToColumn() {
     const columnElement = currentColumnForColor.element;
     const columnData = currentColumnForColor.data;
     
-    // Удаляем все цветовые классы
     columnColors.forEach(color => {
         columnElement.classList.remove(color.class);
     });
     
-    // Добавляем новый цветовой класс
     columnElement.classList.add(colorClass);
     
-    // Сохраняем цвет в данных
     columnData.color = colorClass;
     
-    // Обновляем превью цвета в заголовке колонки
     const colorPreview = columnElement.querySelector('.column-color-preview');
     if (colorPreview) {
         const selectedColorElement = document.querySelector('.color-option.selected');
         colorPreview.style.backgroundColor = selectedColorElement.style.backgroundColor;
     }
     
-    // Обновляем цвет границ всех карточек в колонке
     const cards = columnElement.querySelectorAll('.card');
     const colorValue = getColorValue(colorClass);
     cards.forEach(card => {
@@ -424,7 +388,6 @@ function applyColorToColumn() {
     autoSave();
 }
 
-// Функция форматирования даты
 function formatDate(dateString) {
     if (!dateString) return '';
     const date = new Date(dateString);
