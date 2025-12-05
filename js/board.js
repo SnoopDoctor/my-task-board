@@ -1,33 +1,26 @@
-// Глобальные переменные
 let boardData = { columns: [] };
 let cardData = {};
 let isMobile = window.innerWidth <= 768;
 let mobileColumns = [];
 let currentScrollIndex = 0;
 
-// Основные DOM элементы
 const board = document.getElementById('board');
 const statusMessage = document.getElementById('statusMessage');
 
-// Функция инициализации доски
 function initializeBoard() {
-    // Проверяем мобильность
     checkMobile();
     
-    // Слушаем изменения размера
     window.addEventListener('resize', checkMobile);
     
     loadBoardFromJSON();
     if (boardData.columns.length === 0) {
         createDefaultBoard();
     } else {
-        // Проверяем, есть ли колонка "Архив"
         const hasArchiveColumn = boardData.columns.some(col => 
             col.title.toLowerCase() === 'архив'
         );
         
         if (!hasArchiveColumn) {
-            // Добавляем колонку "Архив" если ее нет
             const archiveColumn = {
                 id: 'col_archive_' + Date.now(),
                 title: 'Архив',
@@ -39,34 +32,28 @@ function initializeBoard() {
         
         renderBoard();
         
-        // Проверяем и перемещаем задачи в архив при загрузке
         setTimeout(() => {
             checkAndMoveToArchive();
         }, 500);
     }
     
-    // Устанавливаем периодическую проверку (каждые 10 минут)
     setInterval(checkAndMoveToArchive, 10 * 60 * 1000);
 
-    // Инициализируем обработчики модальных окон ПОСЛЕ загрузки доски
     setTimeout(() => {
         initModalHandlers();
         initColorPalette();
         
-        // Инициализируем touch-перетаскивание если на мобильном
         if (isMobile) {
             initTouchDrag();
         }
     }, 100);
 }
 
-// Функция загрузки данных
 function loadBoardFromJSON() {
     try {
         const savedData = localStorage.getItem('kanbanBoard');
         if (savedData) {
             boardData = JSON.parse(savedData);
-            // Убедимся, что у всех колонок есть цвет
             boardData.columns.forEach(column => {
                 if (!column.color) {
                     column.color = 'column-blue';
@@ -79,7 +66,6 @@ function loadBoardFromJSON() {
     }
 }
 
-// Функция сохранения данных
 function saveBoardToJSON() {
     try {
         updateBoardData();
@@ -90,13 +76,11 @@ function saveBoardToJSON() {
     }
 }
 
-// Функция автосохранения
 function autoSave() {
     clearTimeout(window.autoSaveTimeout);
     window.autoSaveTimeout = setTimeout(saveBoardToJSON, 100);
 }
 
-// Функция создания доски по умолчанию
 function createDefaultBoard() {
     boardData = {
         columns: [
@@ -171,7 +155,6 @@ function createDefaultBoard() {
     };
 }
 
-// Функция отрисовки доски
 function renderBoard() {
     board.innerHTML = '';
     cardData = {};
@@ -187,7 +170,6 @@ function renderBoard() {
         });
     });
     
-    // Инициализируем мобильный свайп если нужно
     setTimeout(() => {
         mobileColumns = Array.from(board.querySelectorAll('.column'));
         if (isMobile) {
@@ -204,7 +186,6 @@ function renderBoard() {
     }
 }
 
-// Функция проверки и перемещения устаревших задач в архив
 function checkAndMoveToArchive() {
     const readyColumn = boardData.columns.find(col => col.title.toLowerCase() === 'готово');
     const canceledColumn = boardData.columns.find(col => col.title.toLowerCase() === 'отменено');
@@ -216,7 +197,6 @@ function checkAndMoveToArchive() {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(today.getDate() - 7);
     
-    // Функция для перемещения карточек
     function moveOldCards(column, targetColumnId) {
         if (!column) return;
         
@@ -255,7 +235,6 @@ function checkAndMoveToArchive() {
     }
 }
 
-// Функция проверки мобильного устройства
 function checkMobile() {
     const wasMobile = isMobile;
     isMobile = window.innerWidth <= 768;
@@ -276,7 +255,6 @@ function checkMobile() {
     return isMobile;
 }
 
-// Функция обновления данных доски
 function updateBoardData() {
     boardData.columns = Array.from(board.querySelectorAll('.column')).map(column => {
         const columnId = column.dataset.columnId;
@@ -286,7 +264,6 @@ function updateBoardData() {
             return cardData[cardId];
         });
         
-        // Находим цвет колонки
         let color = 'column-blue';
         for (const colorClass of columnColors) {
             if (column.classList.contains(colorClass.class)) {
@@ -304,7 +281,6 @@ function updateBoardData() {
     });
 }
 
-// Функция показа статусного сообщения
 function showStatus(message, type) {
     statusMessage.textContent = message;
     statusMessage.className = 'status-message ' + (type || '');
