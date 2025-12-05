@@ -1,5 +1,3 @@
-// Реализация: центрируем колонки когда указатель у краев экрана
-
 let touchDraggedCard = null;
 let touchStartX = 0;
 let touchStartY = 0;
@@ -9,9 +7,9 @@ let dropPreview = null;
 let dragElement = null;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
-let edgeThreshold = 100; // Порог в пикселях от края для центрирования
-let lastCenteredEdge = 0; // -1: левый край, 1: правый край, 0: нет
-let canCenterAgain = true; // Можно ли снова центрировать
+let edgeThreshold = 100;
+let lastCenteredEdge = 0;
+let canCenterAgain = true;
 let touchStartTime = 0;
 
 function initTouchDrag() {
@@ -46,8 +44,7 @@ function handleCardTouchStart(e) {
     touchStartY = touch.clientY;
     isTouchDragging = false;
     
-    // ДОБАВЬТЕ ЭТУ СТРОКУ если хотите использовать вариант с временем:
-    touchStartTime = Date.now(); // ← добавляем эту строку
+    touchStartTime = Date.now();
     
     currentTouchColumn = card.closest('.column');
     
@@ -57,7 +54,6 @@ function handleCardTouchStart(e) {
     
     card.classList.add('touch-active');
     
-    // Сбрасываем состояние
     lastCenteredEdge = 0;
     canCenterAgain = true;
 }
@@ -72,22 +68,15 @@ function handleDocumentTouchMove(e) {
     e.preventDefault();
     e.stopPropagation();
     
-    // Если еще не начали перетаскивать, проверяем порог
     if (!isTouchDragging) {
-        // Начинаем перетаскивание если движение в основном вертикальное
         if (deltaX > 15 && deltaX > deltaY) {
             startTouchDrag(touch);
         }
         return;
     }
     
-    // Обновляем позицию drag-элемента
     updateDragPosition(touch);
-    
-    // Обновляем превью места вставки
     updateDropPreview(touch);
-    
-    // НОВАЯ ЛОГИКА: центрируем когда указатель у краев экрана
     checkAndCenterAtEdge(touch.clientX);
 }
 
@@ -96,7 +85,6 @@ function startTouchDrag(touch) {
     
     isTouchDragging = true;
     
-    // Отключаем стандартный свайп доски на время перетаскивания
     board.style.pointerEvents = 'none';
     
     createDragElement(touch);
@@ -141,7 +129,6 @@ function createDragElement(touch) {
     dragElement.style.opacity = '1';
     dragElement.style.padding = computedStyle.padding;
     
-    // Удаляем кнопку редактирования из drag элемента
     const editBtn = dragElement.querySelector('.card-edit-btn');
     if (editBtn) editBtn.style.display = 'none';
     
@@ -164,105 +151,80 @@ function showDropZoneIndicators() {
     });
 }
 
-// НОВАЯ ФУНКЦИЯ: центрируем колонки когда указатель у краев экрана
 function checkAndCenterAtEdge(touchX) {
     if (!isTouchDragging || !canCenterAgain || !mobileColumns || mobileColumns.length === 0) return;
     
     const screenWidth = window.innerWidth;
     let targetEdge = 0;
     
-    // Проверяем, у какого края находится указатель
     if (touchX > screenWidth - edgeThreshold) {
-        // Указатель у правого края экрана
         targetEdge = 1;
     } else if (touchX < edgeThreshold) {
-        // Указатель у левого края экрана
         targetEdge = -1;
     }
     
-    // Если указатель у края и это не тот же край, что центрировали в прошлый раз
     if (targetEdge !== 0 && targetEdge !== lastCenteredEdge) {
-        // Определяем индекс колонки для центрирования
         const currentIndex = currentScrollIndex;
         let targetIndex = currentIndex;
         
         if (targetEdge === 1) {
-            // Указатель у правого края → центрируем следующую колонку справа
             targetIndex = Math.min(mobileColumns.length - 1, currentIndex + 1);
         } else if (targetEdge === -1) {
-            // Указатель у левого края → центрируем предыдущую колонку слева
             targetIndex = Math.max(0, currentIndex - 1);
         }
         
-        // Если индекс изменился
         if (targetIndex !== currentIndex) {
             
-            // Центрируем колонку
             scrollToColumn(targetIndex);
             
-            // Запоминаем край
             lastCenteredEdge = targetEdge;
             
-            // Блокируем повторное центрирование на 800мс
             canCenterAgain = false;
             setTimeout(() => {
                 canCenterAgain = true;
-                lastCenteredEdge = 0; // Сбрасываем после задержки
+                lastCenteredEdge = 0;
             }, 800);
         }
     }
 }
 
-// Альтернативная версия без использования currentScrollIndex
 function checkAndCenterAtEdgeSimple(touchX) {
     if (!isTouchDragging || !canCenterAgain || !board) return;
     
     const screenWidth = window.innerWidth;
     let scrollDirection = 0;
     
-    // Проверяем края
     if (touchX > screenWidth - edgeThreshold) {
-        // Указатель у правого края → скроллим влево (к правой колонке)
         scrollDirection = -1;
     } else if (touchX < edgeThreshold) {
-        // Указатель у левого края → скроллим вправо (к левой колонке)
         scrollDirection = 1;
     }
     
-    // Если нужно скроллить и это не то же направление, что в прошлый раз
     if (scrollDirection !== 0 && scrollDirection !== lastCenteredEdge) {
         const currentScroll = board.scrollLeft;
         const columnWidth = mobileColumns[0]?.offsetWidth || 300;
         
-        // Вычисляем целевой скролл
         let targetScroll = currentScroll;
-        const scrollStep = columnWidth; // Скроллим на одну колонку
+        const scrollStep = columnWidth;
         
         if (scrollDirection === -1) {
-            // Скролл влево
             targetScroll = currentScroll - scrollStep;
         } else if (scrollDirection === 1) {
-            // Скролл вправо
             targetScroll = currentScroll + scrollStep;
         }
         
-        // Ограничиваем границы
         const maxScroll = board.scrollWidth - board.clientWidth;
         targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
         
-        // Если позиция изменилась
         if (targetScroll !== currentScroll) {
             
-            // Плавный скролл
             board.scrollTo({
                 left: targetScroll,
                 behavior: 'smooth'
             });
             
-            // Запоминаем край
             lastCenteredEdge = scrollDirection;
             
-            // Блокируем повторное центрирование
             canCenterAgain = false;
             setTimeout(() => {
                 canCenterAgain = true;
@@ -273,7 +235,6 @@ function checkAndCenterAtEdgeSimple(touchX) {
 }
 
 function updateDropPreview(touch) {
-    // Удаляем старый превью
     if (dropPreview && dropPreview.parentNode) {
         dropPreview.remove();
         dropPreview = null;
@@ -353,7 +314,6 @@ function handleDocumentTouchEnd(e) {
     if (isTouchDragging) {
         finishTouchDrag();
     } else {
-        // Простой тап - открываем карточку
         const cardId = touchDraggedCard.dataset.cardId;
         if (cardId) {
             setTimeout(() => {
@@ -378,13 +338,11 @@ function finishTouchDrag() {
     const checkY = dragRect.top + dragRect.height / 2;
     
     
-    // НАЧИНАЕМ С ПРОВЕРКИ - находим все элементы под точкой
     const elements = document.elementsFromPoint(checkX, checkY);
     
     let targetColumn = null;
     let targetCardsContainer = null;
     
-    // Сначала ищем колонку или контейнер карточек
     for (const element of elements) {
         
         if (element.classList.contains('column')) {
@@ -399,7 +357,6 @@ function finishTouchDrag() {
         }
     }
     
-    // Если не нашли через elementsFromPoint, пробуем найти по координатам
     if (!targetColumn) {
         const columns = document.querySelectorAll('.column');
         columns.forEach(column => {
@@ -413,34 +370,27 @@ function finishTouchDrag() {
         });
     }
         
-    // Если нашли целевую колонку и она отличается от исходной
     if (targetColumn && targetColumn !== currentTouchColumn) {
         const cardId = touchDraggedCard.dataset.cardId;
         const targetColumnId = targetColumn.dataset.columnId;
         
         
         if (cardId && targetColumnId) {
-            // 1. Перемещаем в данных
             const moved = moveCardToColumn(cardId, targetColumnId);
             
-            // 2. Удаляем оригинальную карточку из DOM
             if (touchDraggedCard.parentNode) {
                 touchDraggedCard.remove();
             }
             
-            // 3. Получаем данные карточки
             const cardDataItem = cardData[cardId];
             
             if (cardDataItem) {
-                // 4. Находим данные колонки для цвета
                 const columnData = boardData.columns.find(col => col.id === targetColumnId);
                 const columnColor = columnData ? columnData.color : 'column-blue';
                 
-                // 5. Создаем новую карточку в целевой колонке
                 if (targetCardsContainer) {
                     createCardElement(targetCardsContainer, cardDataItem, columnColor);
                     
-                    // 6. Сохраняем изменения
                     autoSave();
                 } else {
                 }
@@ -460,11 +410,9 @@ function finishTouchDrag() {
 }
 
 function cleanupTouchDrag() {
-    // Сбрасываем состояние
     lastCenteredEdge = 0;
     canCenterAgain = true;
     
-    // Восстанавливаем события доски
     if (board) {
         board.style.pointerEvents = 'auto';
     }
