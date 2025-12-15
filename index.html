@@ -1640,8 +1640,6 @@
     <div class="scroll-hint left" id="scrollHintLeft">←</div>
     <div class="scroll-hint right" id="scrollHintRight">→</div>
 
-    <script src="config.js"></script>
-
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
@@ -1649,19 +1647,20 @@
 
     <!-- Firebase Config -->
     <script>
-        // Проверяем, загружен ли конфиг
-        if (!window.FIREBASE_CONFIG) {
-            console.error('Firebase config not found!');
-            alert('Ошибка загрузки приложения. Пожалуйста, обновите страницу.');
-        } else {
-            // Инициализация Firebase
-            firebase.initializeApp(window.FIREBASE_CONFIG);
-            
-            // Глобальные переменные
-            window.auth = firebase.auth();
-            window.db = firebase.firestore();
-            
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyAO6C8t_h5YIXEgjpnPB7Uqbn9uU99vKeQ",
+            authDomain: "kanban-board-ff058.firebaseapp.com",
+            projectId: "kanban-board-ff058",
+            storageBucket: "kanban-board-ff058.firebasestorage.app",
+            messagingSenderId: "546700858700",
+            appId: "1:546700858700:web:413b9cc999987ae8ed2be9",
+            measureurementId: "G-KNE80WS3ML"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
     </script>
 
     <!-- Main App JavaScript -->
