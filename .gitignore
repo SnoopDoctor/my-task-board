@@ -1,7 +1,0 @@
-.env
-.env.local
-config.js
-secrets.js
-
-# Node modules (если используете)
-node_modules/
